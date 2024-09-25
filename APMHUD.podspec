@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
   s.author       = { 'RockyHui' => 'linchaohuirocky@gmail.com' }
   s.source       = { :git => 'https://github.com/RockyHui/APMHUD.git', :tag => s.version.to_s }
-  s.source_files = 'Classes/*.{swift}'
+  s.source_files = 'Classes/*'
   s.platform     = :ios, '11.0'
-  s.swift_version = '4.0', '4.2', '5.0'
+  s.swift_version = '4.2', '5.0'
 end
