@@ -66,7 +66,7 @@ public class APMTool: NSObject {
     public static let shared = APMTool()
     
     /// 当前性能悬浮标签是否展示出来
-    private var isShowing = false
+    public var isShowing = false
     
     public override init() {
         super.init()
@@ -121,9 +121,9 @@ extension APMTool {
 
 extension APMTool {
     
-    /// HUD标签的现实与隐藏
+    /// 显示HUD标签
     /// - Parameter types: 需要显示的性能指标数组
-    public func togglePMLabel(types: [PMToolType]) {
+    public func showPMLabel(types: [PMToolType]) {
         guard let keyWindow = UIApplication.shared.keyWindow else {
             print("Root ViewController is Nil❗️")
             return
@@ -132,14 +132,17 @@ extension APMTool {
             keyWindow.addSubview(self.displayView)
         }
         
-        if isShowing {
-            displayView.hidePMLabelsWithAnimation()
-        } else {
-            if self.displayVC.parent == nil {
-                keyWindow.rootViewController?.addChild(self.displayVC)
-            }
-            displayView.showPMLabelWithAnimation(types: types)
+        if self.displayVC.parent == nil {
+            keyWindow.rootViewController?.addChild(self.displayVC)
         }
-        isShowing = !isShowing
+        displayView.showPMLabelWithAnimation(types: types)
+        isShowing = true
+    }
+    
+    /// 隐藏HUD标签
+    public func hidePMLabel() {
+        guard isShowing else { return }
+        displayView.hidePMLabelsWithAnimation()
+        isShowing = false
     }
 }

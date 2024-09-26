@@ -23,7 +23,11 @@ class ViewController: UIViewController {
 
 
     @IBAction func clickSwitch(_ sender: UISwitch) {
-        APMTool.shared.togglePMLabel(types: [.Memory, .CPU, .FPS])
+        if sender.isOn {
+            APMTool.shared.showPMLabel(types: [.Memory, .CPU, .FPS])
+        } else {
+            APMTool.shared.hidePMLabel()
+        }
     }
 }
 

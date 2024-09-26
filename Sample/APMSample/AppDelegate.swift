@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         DispatchQueue.main.async {
             APMTool.shared.startMointors(types: [.Memory, .CPU, .FPS])   // 开启性能监控
             
-            APMTool.shared.togglePMLabel(types: [.Memory, .CPU, .FPS])     // 显示监控项对应的悬浮标签
+            APMTool.shared.showPMLabel(types: [.Memory, .CPU, .FPS])     // 显示监控项对应的悬浮标签
         }
 #endif
         return true
