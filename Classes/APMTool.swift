@@ -45,18 +45,6 @@ public class APMTool: NSObject {
         return displayView
     }()
     
-    lazy var displayVC: APMDisplayViewController = {
-        let vc = APMDisplayViewController()
-        vc.rotateCallBack = { [weak self] size in
-            self?.displayView.handleRotate(size: size)
-        }
-        let frame = CGRect(x: 0, y: 0, width: 1, height: 1)
-        vc.view.frame = frame
-        vc.view.isUserInteractionEnabled = false
-        vc.view.backgroundColor = .clear
-        return vc
-    }()
-    
     /// 显示UI配置
     public lazy var config: APMDisplayConfiguration = {
         return APMDisplayConfiguration()
@@ -132,9 +120,6 @@ extension APMTool {
             keyWindow.addSubview(self.displayView)
         }
         
-        if self.displayVC.parent == nil {
-            keyWindow.rootViewController?.addChild(self.displayVC)
-        }
         displayView.showPMLabelWithAnimation(types: types)
         isShowing = true
     }

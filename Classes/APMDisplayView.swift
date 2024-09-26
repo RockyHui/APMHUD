@@ -26,6 +26,7 @@ public class APMDisplayView: UIView {
     
     /// 显示的悬浮标签
     private var displayLabels = [APMDisplayUsageLabel]()
+    private var inAnimating = false
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -35,16 +36,32 @@ public class APMDisplayView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func handleRotate(size: CGSize) {
-        guard !displayLabels.isEmpty else { return }
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        if !inAnimating {
+            handleRotate()
+        }
+        
+    }
+    
+    private func adjustSelfFrame() {
+        guard let superview = self.superview else {
+            return
+        }
+        let size = superview.bounds.size
         var frame = self.frame
         let w = size.width
         frame.size.width = w
         let offsetY = UIScreen.safeAreaInset.top
         frame.origin.y = offsetY < 1 ? 1 : offsetY
         self.frame = frame
-        
-        self.layoutLabels()
+    }
+    
+    private func handleRotate() {
+        adjustSelfFrame()
+        guard !displayLabels.isEmpty else { return }
+        layoutLabels()
     }
     
 }
@@ -97,10 +114,11 @@ extension APMDisplayView {
         frame.origin.y = -frame.size.height
         self.frame = frame
         frame.origin.y = topOffset
+        self.inAnimating = true
         UIView.animate(withDuration: 0.3) { [weak self] in
             self?.frame = frame
-        } completion: { _ in
-            //
+        } completion: { [weak self] _ in
+            self?.inAnimating = false
         }
     }
     
@@ -108,10 +126,12 @@ extension APMDisplayView {
     func hidePMLabelsWithAnimation() {
         var frame = self.frame
         frame.origin.y = -frame.size.height
+        self.inAnimating = true
         UIView.animate(withDuration: 0.3) { [weak self] in
             self?.frame = frame
         } completion: { [weak self] _ in
             self?.clearUpLabels()
+            self?.inAnimating = false
         }
     }
     
